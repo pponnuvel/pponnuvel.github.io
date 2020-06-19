@@ -1,9 +1,9 @@
-title: Stack Problems
-description: My Personal Stack Problems
-author: Agus Makmun
-github: https://github.com/agusmakmun
-about: I'm Programmer for Python & Django. I've made quite a few web apps, especially on Django.
-disqus_shortname: stackproblems
+title: Hello, world!
+description: A stream of random bytes
+author: Ponnuvel Palaniyappan
+github: https://github.com/pponnuvel
+about: I am a systems programmer (Linux), based in the UK.
+disqus_shortname: A stream of random bytes
 google_analytics: UA-XXXXXXXX-Y
 
 enableTags: true
@@ -15,16 +15,14 @@ collections:
     permalink: /project/:path/
 
 social:
-    - icon: fa-facebook
-      link: "#"
     - icon: fa-twitter
-      link: "#"
+      link: "https://twitter.com/pponnuvel"
     - icon: fa-linkedin
-      link: "#"
+      link: "https://linkedin.com/in/pponnuvel"
     - icon: fa-stack-exchange
-      link: "#"
+      link: "https://stackoverflow.com/users/1275169"
     - icon: fa-github
-      link: "https://github.com/agusmakmun"
+      link: "https://github.com/pponnuvel"
 
 share:
   twitter_username: github.io
@@ -33,13 +31,13 @@ share:
 urls:
     - text: About Me
       url: /about/
-    - text: My Projects
-      url: /projects/
-    - text: XML Feed
-      url: /feed.xml
+    # - text: My Projects
+    #  url: /projects/
+    # - text: XML Feed
+    #  url: /feed.xml
 
-url: "https://agusmakmun.github.io"
-baseurl: ""
+url: "https://pponnuvel.github.io"
+baseurl: https://pponnuvel.com
 paginate: 20
 per_page: 20
 paginate_path: "/page/:num/"
