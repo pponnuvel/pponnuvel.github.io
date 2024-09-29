@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ponnuvel Palaniyappan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:           #07070e;
+      --surface:      #0d0d1a;
+      --card:         #101020;
+      --card-hover:   #161632;
+      --border:       rgba(140, 130, 255, 0.1);
+      --accent:       #8b5cf6;
+      --accent-glow:  rgba(139, 92, 246, 0.25);
+      --cyan:         #22d3ee;
+      --text:         #e2e8f0;
+      --text-muted:   #94a3b8;
+      --text-subtle:  #44556a;
+      --nav-h:        66px;
+      --radius:       12px;
+      --ease:         cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── BACKGROUND ORBS ── */
+    .bg-orbs {
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 0;
+      overflow: hidden;
+    }
+    .orb {
+      position: absolute; border-radius: 50%;
+      filter: blur(90px); opacity: 0.14;
+    }
+    .orb-1 {
+      width: 650px; height: 650px;
+      background: radial-gradient(circle, var(--accent), transparent);
+      top: -220px; left: -220px;
+      animation: float1 22s ease-in-out infinite;
+    }
+    .orb-2 {
+      width: 520px; height: 520px;
+      background: radial-gradient(circle, var(--cyan), transparent);
+      bottom: -160px; right: -160px;
+      animation: float2 28s ease-in-out infinite;
+    }
+    .orb-3 {
+      width: 320px; height: 320px;
+      background: radial-gradient(circle, #f472b6, transparent);
+      top: 50%; left: 55%;
+      transform: translate(-50%, -50%);
+      opacity: 0.07;
+      animation: pulse3 18s ease-in-out infinite;
+    }
+    @keyframes float1 {
+      0%,100% { transform: translate(0,0); }
+      33%      { transform: translate(70px, 50px); }
+      66%      { transform: translate(-40px, 80px); }
+    }
+    @keyframes float2 {
+      0%,100% { transform: translate(0,0); }
+      33%      { transform: translate(-60px,-40px); }
+      66%      { transform: translate(50px,-70px); }
+    }
+    @keyframes pulse3 {
+      0%,100% { transform: translate(-50%,-50%) scale(1); }
+      50%      { transform: translate(-50%,-50%) scale(1.35); }
+    }
+
+    /* ── NAVIGATION ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem;
+      background: rgba(7,7,14,0.65);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+    }
+    .nav-brand {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.35rem; font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--cyan));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.02em;
+      user-select: none;
+    }
+    .nav-links { display: flex; gap: 0.4rem; }
+    .nav-btn {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem; font-weight: 500;
+      color: var(--text-muted);
+      background: none; border: 1px solid transparent;
+      padding: 0.45rem 1rem; border-radius: 8px;
+      cursor: pointer;
+      transition: color 0.2s var(--ease), background 0.2s var(--ease), border-color 0.2s var(--ease);
+      letter-spacing: 0.01em;
+    }
+    .nav-btn:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+    .nav-btn.active {
+      color: #fff;
+      background: rgba(139,92,246,0.14);
+      border-color: rgba(139,92,246,0.35);
+    }
+
+    /* ── SECTION TRANSITIONS ── */
+    .section { display: none; position: relative; z-index: 1; }
+    .section.active {
+      display: block;
+      animation: sectionIn 0.45s var(--ease) forwards;
+    }
+    @keyframes sectionIn {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── STAGGERED CHILDREN ── */
+    .fade-in {
+      opacity: 0;
+      animation: fadeUp 0.55s var(--ease) forwards;
+    }
+    .fade-in:nth-child(1) { animation-delay: 0.08s; }
+    .fade-in:nth-child(2) { animation-delay: 0.18s; }
+    .fade-in:nth-child(3) { animation-delay: 0.28s; }
+    .fade-in:nth-child(4) { animation-delay: 0.38s; }
+    .fade-in:nth-child(5) { animation-delay: 0.46s; }
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in { transform: translateY(14px); }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+    }
+
+    /* ── ABOUT ── */
+    .about-wrap {
+      max-width: 760px; margin: 0 auto;
+      padding: calc(var(--nav-h) + 4rem) 2rem 5rem;
+      display: flex; flex-direction: column; gap: 2.75rem;
+    }
+    .about-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem; color: var(--accent);
+      letter-spacing: 0.12em; text-transform: uppercase;
+    }
+    .about-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.6rem, 4.5vw, 3.2rem);
+      font-weight: 700; line-height: 1.08;
+      letter-spacing: -0.03em;
+      white-space: nowrap;
+      background: linear-gradient(140deg, #fff 0%, #94a3b8 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .about-role {
+      display: flex; align-items: center; gap: 0.75rem;
+      font-size: 1.05rem; color: var(--text-muted); font-weight: 400;
+      margin-top: 0.5rem;
+    }
+    .about-role::before {
+      content: ''; display: inline-block;
+      width: 2rem; height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--cyan));
+      border-radius: 2px; flex-shrink: 0;
+    }
+    .about-bio p {
+      font-size: 1.02rem; line-height: 1.8;
+      color: var(--text-muted); margin-bottom: 0.9rem;
+    }
+    .about-bio p:last-child { margin-bottom: 0; }
+    .about-bio a {
+      color: var(--text); text-decoration: none;
+      border-bottom: 1px solid rgba(139,92,246,0.4);
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .about-bio a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+    .about-bio strong { color: var(--text); font-weight: 600; }
+
+    /* Tags */
+    .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.74rem; padding: 0.28rem 0.72rem;
+      border-radius: 100px;
+      background: rgba(139,92,246,0.1);
+      border: 1px solid rgba(139,92,246,0.22);
+      color: var(--accent); letter-spacing: 0.02em;
+    }
+    .tag.c {
+      background: rgba(34,211,238,0.08);
+      border-color: rgba(34,211,238,0.2);
+      color: var(--cyan);
+    }
+
+    /* Social links */
+    .social-label {
+      font-size: 0.78rem; font-weight: 500;
+      color: var(--text-subtle); text-transform: uppercase;
+      letter-spacing: 0.09em; margin-bottom: 0.75rem;
+    }
+    .social-links { display: flex; flex-wrap: wrap; gap: 0.65rem; }
+    .social-link {
+      display: flex; align-items: center; gap: 0.5rem;
+      padding: 0.58rem 1.1rem;
+      border-radius: var(--radius);
+      background: var(--card); border: 1px solid var(--border);
+      color: var(--text-muted); text-decoration: none;
+      font-size: 0.855rem; font-weight: 500;
+      transition: background 0.25s var(--ease), color 0.25s var(--ease),
+                  border-color 0.25s var(--ease), transform 0.25s var(--ease),
+                  box-shadow 0.25s var(--ease);
+    }
+    .social-link:hover {
+      background: var(--card-hover); color: var(--text);
+      border-color: rgba(139,92,246,0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(139,92,246,0.14);
+    }
+    .social-link svg { width: 15px; height: 15px; opacity: 0.75; flex-shrink: 0; }
+
+    /* ── BLOG ── */
+    .blog-wrap {
+      max-width: 760px; margin: 0 auto;
+      padding: calc(var(--nav-h) + 3.5rem) 2rem 5rem;
+      display: flex; flex-direction: column; gap: 2.5rem;
+    }
+    .blog-heading {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2.4rem; font-weight: 700;
+      letter-spacing: -0.03em;
+      background: linear-gradient(140deg, #fff 0%, #94a3b8 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .blog-sub { color: var(--text-subtle); font-size: 0.95rem; margin-top: 0.35rem; }
+
+    .posts { display: flex; flex-direction: column; gap: 1.1rem; }
+
+    .post-card {
+      display: flex; flex-direction: column; gap: 0.7rem;
+      padding: 1.65rem 1.75rem;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); text-decoration: none; color: inherit;
+      position: relative; overflow: hidden;
+      transition: background 0.25s var(--ease), border-color 0.25s var(--ease),
+                  transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+    }
+    .post-card::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; width: 3px; height: 0;
+      background: linear-gradient(180deg, var(--accent), var(--cyan));
+      transition: height 0.3s var(--ease); border-radius: 0 0 3px 3px;
+    }
+    .post-card:hover {
+      background: var(--card-hover);
+      border-color: rgba(139,92,246,0.28);
+      transform: translateY(-3px);
+      box-shadow: 0 14px 44px rgba(0,0,0,0.45);
+    }
+    .post-card:hover::before { height: 100%; }
+
+    .post-meta {
+      display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap;
+    }
+    .post-date {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem; color: var(--text-subtle);
+    }
+    .post-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .post-tag {
+      font-size: 0.68rem; padding: 0.18rem 0.58rem; border-radius: 100px;
+      background: rgba(34,211,238,0.07);
+      border: 1px solid rgba(34,211,238,0.15);
+      color: var(--cyan); font-weight: 500;
+    }
+    .post-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.15rem; font-weight: 600;
+      color: var(--text); line-height: 1.3;
+      transition: color 0.2s;
+    }
+    .post-card:hover .post-title { color: #fff; }
+    .post-excerpt {
+      font-size: 0.875rem; color: var(--text-muted); line-height: 1.65;
+    }
+    .post-arrow {
+      align-self: flex-end; color: var(--text-subtle);
+      font-size: 1.1rem; margin-top: 0.2rem;
+      transition: color 0.2s var(--ease), transform 0.2s var(--ease);
+    }
+    .post-card:hover .post-arrow { color: var(--accent); transform: translateX(5px); }
+
+    .blog-cta {
+      text-align: center; padding: 1.75rem;
+      border: 1px dashed rgba(139,92,246,0.18);
+      border-radius: var(--radius);
+      color: var(--text-subtle); font-size: 0.88rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative; z-index: 1;
+      text-align: center;
+      padding: 1.75rem 2rem;
+      border-top: 1px solid var(--border);
+      color: var(--text-subtle);
+      font-size: 0.78rem;
+      letter-spacing: 0.02em;
+    }
+    footer a {
+      color: var(--text-subtle); text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    footer a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 620px) {
+      nav { padding: 0 1.25rem; }
+      .about-wrap, .blog-wrap { padding-left: 1.25rem; padding-right: 1.25rem; }
+      .social-link { font-size: 0.82rem; padding: 0.5rem 0.9rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient background -->
+  <div class="bg-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-brand">pp.</div>
+    <div class="nav-links">
+      <button class="nav-btn active" data-target="about">About</button>
+      <button class="nav-btn"        data-target="blog" >Blog</button>
+    </div>
+  </nav>
+
+  <!-- ── ABOUT ── -->
+  <section id="about" class="section active">
+    <div class="about-wrap">
+
+      <div class="fade-in">
+        <span class="about-tag">// hello, world</span>
+        <h1 class="about-name">Ponnuvel Palaniyappan</h1>
+        <p class="about-role">Software Engineer &nbsp;·&nbsp; Systems Engineering &nbsp;·&nbsp; Linux</p>
+      </div>
+
+      <div class="divider fade-in"></div>
+
+      <div class="about-bio fade-in">
+        <p>I'm a software developer based in the <strong>UK</strong>, specialising in distributed storage and cloud infrastructure. I work at <a href="https://canonical.com/" target="_blank" rel="noopener noreferrer">Canonical</a>, where I focus on <a href="https://ceph.io/en/" target="_blank" rel="noopener noreferrer">Ceph Storage</a>, cloud platforms and all things <strong>Linux</strong>.</p>
+        <p>I am an open-source software engineer and active contributor, passionate about building reliable, scalable infrastructure that powers the modern cloud.</p>
+      </div>
+
+      <div class="tags fade-in">
+        <span class="tag">Ceph</span>
+        <span class="tag c">Linux</span>
+        <span class="tag c">Cloud</span>
+        <span class="tag">Open Source</span>
+        <span class="tag">Python</span>
+        <span class="tag">Systems Programming</span>
+      </div>
+
+      <div class="fade-in">
+        <div class="social-links">
+          <a href="https://github.com/pponnuvel" target="_blank" rel="noopener noreferrer" class="social-link">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.09.682-.218.682-.484 0-.236-.009-.866-.013-1.699-2.782.605-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.091-.646.349-1.086.635-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .269.18.579.688.481C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z"/></svg>
+            GitHub
+          </a>
+          <a href="https://www.linkedin.com/in/pponnuvel/" target="_blank" rel="noopener noreferrer" class="social-link">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            LinkedIn
+          </a>
+          <a href="https://twitter.com/pponnuvel" target="_blank" rel="noopener noreferrer" class="social-link">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            Twitter / X
+          </a>
+          <a href="https://stackoverflow.com/users/1275169/" target="_blank" rel="noopener noreferrer" class="social-link">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M15.725 0l-1.72 1.277 6.39 8.588 1.716-1.277zm-3.94 3.418l-1.369 1.644 8.225 6.85 1.369-1.644zm-3.15 4.465l-.905 1.94 9.702 4.517.904-1.94zm-1.85 4.86l-.44 2.093 10.473 2.201.44-2.09zM1.89 15.47V24h19.19v-8.53h-2.133v6.397H4.021v-6.396zm4.265 2.133v2.134h10.66v-2.134z"/></svg>
+            Stack Overflow
+          </a>
+          <a href="https://launchpad.net/~pponnuvel" target="_blank" rel="noopener noreferrer" class="social-link">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.5 14H8.41l5.09-5.09V14H15v-5h-5v1.5h2.09L7 15.59V8H5.5C5.5 4.97 8.19 2.5 12 2.5S18.5 4.97 18.5 8c0 2.76-1.57 5.15-3.88 6.36L14 14h.5v1.5H16v-1.5h.5V14zm-8-6h7v7h-1.5v-5.5H8V10z"/></svg>
+            Launchpad
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── BLOG ── -->
+  <section id="blog" class="section">
+    <div class="blog-wrap">
+
+      <div class="fade-in">
+        <h2 class="blog-heading">Blog</h2>
+        <p class="blog-sub">Thoughts on storage, Linux, and open source.</p>
+      </div>
+
+      <div class="posts fade-in">
+
+      </div>
+
+      <div class="blog-cta fade-in">More posts coming soon.</div>
+
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; <span id="year"></span> Ponnuvel Palaniyappan. All rights reserved.</p>
+  </footer>
+
+  <script>
+    (function () {
+      document.getElementById('year').textContent = new Date().getFullYear();
+      const btns     = document.querySelectorAll('.nav-btn');
+      const sections = document.querySelectorAll('.section');
+
+      function navigate(target) {
+        const next = document.getElementById(target);
+        if (!next) return;
+
+        // Hide all, reset animations
+        sections.forEach(s => s.classList.remove('active'));
+        btns.forEach(b => b.classList.toggle('active', b.dataset.target === target));
+
+        // Re-trigger child fade-ins
+        next.querySelectorAll('.fade-in').forEach(el => {
+          el.style.animation = 'none';
+          void el.offsetWidth; // force reflow
+          el.style.animation = '';
+        });
+
+        next.classList.add('active');
+      }
+
+      btns.forEach(btn => btn.addEventListener('click', () => navigate(btn.dataset.target)));
+    })();
+  </script>
+
+</body>
+</html>
